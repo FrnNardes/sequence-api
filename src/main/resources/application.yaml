@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: sequence-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sequence_db
+    username: dev_user
+    password: dev_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+
+jwt:
+  secret: 7bb3f97f5c5707d23b69e91571d72e5c
+  expiration: 86400000
