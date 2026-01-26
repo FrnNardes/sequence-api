@@ -43,9 +43,6 @@ public class User {
 
     @Builder
     public User(String username, String email, String password){
-        if(!email.contains("@")){
-            throw new IllegalArgumentException("Invalid email format");
-        }
         this.id = UUID.randomUUID();
         this.username = username;
         this.email = email;

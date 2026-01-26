@@ -1,17 +1,77 @@
+### Register a new user
 POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
   "username": "Frn",
-  "email": "frnnardes@hunter.com",
-  "password": "system-key-123"
+  "email": "frnnardes@gmail.com",
+  "password": "system123"
 }
 
-###
+### Login and Save Token
 POST http://localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-  "email": "frnnardes@hunter.com",
-  "password": "system-key-123"
+  "email": "frnnardes@gmail.com",
+  "password": "system123"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+    client.log("Token saved: " + response.body.token);
+%}
+
+### Select Pathway
+POST http://localhost:8080/api/users/pathway
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "pathwayName": "The Lifter"
+}
+
+### Create a Routine
+POST http://localhost:8080/api/routines
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "name": "Lower A",
+  "exercises": [
+    {
+      "exerciseId": "22222222-2222-2222-2222-222222222222",
+      "sets": [
+        {
+          "type": "WARMUP"
+        },
+        {
+          "type": "WORKING"
+        },
+        {
+          "type": "WORKING"
+        },
+        {
+          "type": "FAILURE"
+        }
+      ]
+    },
+    {
+      "exerciseId": "33333333-3333-3333-3333-333333333333",
+      "sets": [
+        {
+          "type": "WARMUP"
+        },
+        {
+          "type": "WORKING"
+        },
+        {
+          "type": "WORKING"
+        },
+        {
+          "type": "FAILURE"
+        }
+      ]
+    }
+  ]
 }
