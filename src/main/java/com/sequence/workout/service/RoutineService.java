@@ -2,20 +2,18 @@ package com.sequence.workout.service;
 
 import com.sequence.user.model.User;
 import com.sequence.user.repository.UserRepository;
-import com.sequence.workout.dto.RoutineExerciseRequest;
-import com.sequence.workout.dto.RoutineRequest;
-import com.sequence.workout.dto.RoutineResponse;
-import com.sequence.workout.dto.RoutineSetRequest;
+import com.sequence.workout.dto.*;
 import com.sequence.workout.mapper.RoutineMapper;
-import com.sequence.workout.model.Exercise;
-import com.sequence.workout.model.Routine;
-import com.sequence.workout.model.RoutineExercise;
-import com.sequence.workout.model.RoutineSet;
+import com.sequence.workout.model.*;
 import com.sequence.workout.repository.ExerciseRepository;
 import com.sequence.workout.repository.RoutineRepository;
+import com.sequence.workout.repository.WorkoutRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +21,8 @@ public class RoutineService {
     private final RoutineRepository routineRepository;
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
+    private final WorkoutService workoutService;
+    private final WorkoutRepository workoutRepository;
 
     @Transactional
     public RoutineResponse createRoutine(String email, RoutineRequest request){
@@ -53,5 +53,34 @@ public class RoutineService {
         routineRepository.save(routine);
 
         return RoutineMapper.toResponse(routine);
+    }
+
+    @Transactional
+    public void deleteRoutine(String email, UUID id){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Routine routine = routineRepository.findByIdAndUser(id, user)
+                .orElseThrow(() -> new RuntimeException("Routine not found"));
+
+        List<Workout> workouts = workoutRepository.findAllByRoutine(routine);
+        for(Workout w : workouts){
+            w.removeRoutine();
+        }
+
+        workoutRepository.saveAll(workouts);
+
+        routineRepository.delete(routine);
+    }
+
+    @Transactional
+    public List<RoutineResponse> getAllRoutines(String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return routineRepository.findAllByUser(user)
+                .stream()
+                .map(RoutineMapper::toResponse)
+                .toList();
     }
 }

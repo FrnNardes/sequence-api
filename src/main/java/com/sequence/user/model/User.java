@@ -42,12 +42,12 @@ public class User {
     private Integer currentXp = 0;
 
     @Builder
-    public User(String username, String email, String password){
-        this.id = UUID.randomUUID();
+    public User(UUID id, String username, String email, String password, OffsetDateTime createdAt){
+        this.id = (id != null) ? id : UUID.randomUUID();
         this.username = username;
         this.email = email;
         this.password = password;
-        this.createdAt = OffsetDateTime.now();
+        this.createdAt = (createdAt != null) ? createdAt : OffsetDateTime.now();
         this.currentXp = 0;
     }
 

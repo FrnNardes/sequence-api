@@ -34,5 +34,6 @@ public class Routine {
         this.user = user;
         this.name = name;
         this.exercises = exercises;
+
     }
 }

@@ -8,9 +8,7 @@ import java.util.UUID;
 public record RoutineResponse(
         UUID id,
         UUID userId,
-        String name
-        // List<RoutineExercise> exercises - If we want to return this, we must build a response
-        // because inside RoutineExercise, we have a Routine, which has a Routine Exercise, and this
-        // creates an infinite loop.
+        String name,
+        List<RoutineExerciseResponse> exercises
 )
 { }
