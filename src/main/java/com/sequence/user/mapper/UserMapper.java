@@ -1,6 +1,7 @@
 package com.sequence.user.mapper;
 
 import com.sequence.user.dto.UserAuthResponse;
+import com.sequence.user.dto.UserProfileResponse;
 import com.sequence.user.dto.UserRegistrationRequest;
 import com.sequence.user.dto.UserResponse;
 import com.sequence.user.model.User;
