@@ -3,9 +3,9 @@ spring:
     name: sequence-api
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/sequence_db
-    username: dev_user
-    password: dev_password
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/sequence_db}
+    username: ${SPRING_DATASOURCE_USERNAME:dev_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:dev_password}
     driver-class-name: org.postgresql.Driver
 
   jpa:
