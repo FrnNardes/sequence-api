@@ -1,7 +1,10 @@
 package com.sequence.workout.repository;
 
+import com.sequence.user.model.User;
 import com.sequence.workout.model.Routine;
 import com.sequence.workout.model.Workout;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -9,4 +12,7 @@ import java.util.UUID;
 
 public interface WorkoutRepository extends JpaRepository<Workout, UUID> {
     List<Workout> findAllByRoutine(Routine routine);
+    Page<Workout> findAllByUser(User user, Pageable pageable);
+
+    int countAllByUser(User user);
 }

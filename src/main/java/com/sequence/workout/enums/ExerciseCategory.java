@@ -4,5 +4,7 @@ public enum ExerciseCategory {
     BARBELL,
     DUMBBELL,
     BODYWEIGHT,
-    MACHINE
+    MACHINE,
+    CABLE,
+    KETTLEBELL
 }

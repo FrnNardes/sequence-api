@@ -22,6 +22,10 @@ Content-Type: application/json
     client.log("Token saved: " + response.body.token);
 %}
 
+### Get Me
+GET http://localhost:8080/api/users/me
+Authorization: Bearer {{auth_token}}
+
 ### Select Pathway
 POST http://localhost:8080/api/users/pathway
 Content-Type: application/json
@@ -82,6 +86,11 @@ Authorization: Bearer {{auth_token}}
   "reps": 10,
   "completed": true
 }
+
+### Get All Workouts
+
+GET http://localhost:8080/api/workouts
+Authorization: Bearer {{auth_token}}
 
 ### Finish Workout
 POST http://localhost:8080/api/workouts/{73cce1a8-32d3-48e3-b5f5-9ad66b5453b7}/finish

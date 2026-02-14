@@ -4,6 +4,7 @@ import com.sequence.workout.dto.*;
 import com.sequence.workout.service.WorkoutService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,13 @@ import java.util.UUID;
 @RequestMapping("api/workouts")
 public class WorkoutController {
     private final WorkoutService workoutService;
+
+    @GetMapping
+    public ResponseEntity<Page<WorkoutResponse>> getWorkouts(Authentication auth, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        String email = (String) auth.getPrincipal();
+        Page<WorkoutResponse> response = workoutService.getWorkouts(email, page, size);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PostMapping("/start")
     public ResponseEntity<WorkoutResponse> createWorkout(Authentication auth, @RequestBody WorkoutRequest workoutRequest){

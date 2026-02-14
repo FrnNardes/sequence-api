@@ -11,9 +11,14 @@ import com.sequence.workout.repository.WorkoutRepository;
 import com.sequence.workout.repository.WorkoutSetRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -133,5 +138,16 @@ public class WorkoutService {
         }
 
         workoutRepository.delete(workout);
+    }
+
+    @Transactional
+    public Page<WorkoutResponse> getWorkouts(String email, int page, int size){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not find"));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("startTime").descending());
+
+        return workoutRepository.findAllByUser(user, pageable)
+                .map(WorkoutMapper::toResponse);
     }
 }

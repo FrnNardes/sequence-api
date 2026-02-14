@@ -27,6 +27,13 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileResponse> getProfile(Authentication auth){
+        String email = (String) auth.getPrincipal();
+        UserProfileResponse response = userService.getProfile(email);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/pathway")
     public ResponseEntity<UserResponse> selectPathway(@RequestBody PathwaySelectionRequest dto, Authentication auth) {
         String email = (String) auth.getPrincipal();

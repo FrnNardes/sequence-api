@@ -9,6 +9,7 @@ import com.sequence.user.mapper.UserMapper;
 import com.sequence.user.model.User;
 import com.sequence.user.repository.UserRepository;
 import com.sequence.user.security.JwtSecurity;
+import com.sequence.workout.repository.WorkoutRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class UserService {
     private final SequenceRepository sequenceRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtSecurity jwtSecurity;
+    private final WorkoutRepository workoutRepository;
 
     @Transactional
     public UserAuthResponse registerUser(UserRegistrationRequest dto){
@@ -71,5 +73,23 @@ public class UserService {
         userRepository.save(user);
 
         return UserMapper.toResponse(user);
+    }
+
+    @Transactional
+    public UserProfileResponse getProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        int totalWorkouts = workoutRepository.countAllByUser(user);
+
+        return new UserProfileResponse(
+                user.getUsername(),
+                user.getEmail(),
+                user.getPathway().getName(),
+                user.getLevel(),
+                user.getXp(),
+                (1000 - user.getXp()),
+                totalWorkouts
+        );
     }
 }

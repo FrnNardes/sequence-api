@@ -56,4 +56,12 @@ public class User {
         this.currentSequence = startingSequence;
         this.currentXp = 0;
     }
+
+    public int getLevel() {
+        return (int) Math.floor((double) this.getXp() / 1000) + 1;
+    }
+
+    public int getXp(){
+        return currentXp;
+    }
 }
